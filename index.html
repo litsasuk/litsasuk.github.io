@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+
+
+
+
+    <link rel="shortcut icon" href="./images/favicon.ico">
+
+
+    <link rel="icon" type="image/png" href="./images/favicon-192x192.png" sizes="192x192">
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="./images/apple-touch-icon.png">
+
+    <!-- title -->
+
+    <title>Litsasuk</title>
+
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-13047966-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-13047966-1');
+    </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+
+    <link rel="stylesheet" href="./css/style.css">
+
+    <!-- persian styles -->
+
+    <!-- rss -->
+
+
+    <!-- mathjax -->
+
+    <meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+
+
+
+<div class="content index py4 h-card">
+
+    <header id="header">
+
+        <img id="logo" alt class="u-logo" src="./images/litsasuk.png" />
+
+
+        <div id="title">
+            <a class="u-url u-uid" href="/"> <h1 class="p-name">Litsasuk</h1> </a>
+        </div>
+
+        <div id="nav">
+            <ul>
+                <li class="icon">
+                    <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+                </li>
+
+                <li><a href="./">Home</a></li>
+                <li><a href="./articles/">Articles</a></li>
+
+                <li><a href="./categories/">Categories</a></li>
+
+                <li><a href="./about/">About</a></li>
+
+            </ul>
+        </div>
+    </header>
+
+    <section id="about" class="p-note">
+
+        <p>This is Litsasuk Speaking!</p>
+
+
+
+        <section id="writing">
+    <span class="h1" style="border-left: 5px solid #36414d; padding: 5px; color: #fff; background-color: #a3b8cc; font-size: 20px; font-weight: bold; line-height: 1; text-transform: uppercase; margin-top: 20px;">
+        <a href="" style="color: #fff; text-decoration: none;">Home</a>
+    </span>
+        </section>
+
+
+        <!--home1-->
+        <h2 class="date-header">December 24, 2024</h2>
+        <a id="a001294"></a>
+        <div class="entry" id="entry-1294">
+            <h3 class="entry-header">卡牌构筑类游戏小结</h3>
+            <div class="entry-content">
+                <div class="entry-body">
+                    <p>这个月玩了许多游戏，有电子游戏也有桌游。主要是想更好的理解卡牌构筑类游戏的设计点，回答我自己在设计过程中的一些疑问。今天写一篇关于卡牌构筑类游戏的总结。</p>
+
+                    <p>卡牌构筑类的电子游戏引爆于 2017 年的 Slay the Spire 杀戮尖塔（它或许受到了 2014 年 iOS 上 Dream Quest 的启发），启发了数以千计的类似游戏诞生。追其源头，是从更早的桌游开始。所以，我对这个类型的桌游做了一些研究。对于有兴趣的同学，我推荐 Youtube 上的 <a href="https://www.youtube.com/watch?v=7-v3Oj9ofFc">How to design a DECK BUILDING board game</a> ，它做了非常不错的总结。我也是在看完这个视频后了解到一些过去没玩过的桌游。</p>
+
+                    <p class="entry-more-link">
+                        <a href="https://blog.codingnow.com/2024/12/deck_building_game.html#more">阅读全文 "卡牌构筑类游戏小结" &raquo;</a>
+                    </p>
+
+                    <p class="entry-footer">
+                        <span class="post-footers">Litsasuk 提交于 08:00 PM</span> <span class="separator">|</span> <a class="permalink" href="https://blog.codingnow.com/2024/12/deck_building_game.html">文章链接</a>
+                        | <a href="https://blog.codingnow.com/2024/12/deck_building_game.html#comments">留言</a>
+
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!--home3-->
+        <hr>
+        <h4 class="date-header">August 18, 2024</h4>
+        <a id="a001285"></a>
+        <div class="entry" id="entry-1285">
+            <h3 class="entry-header">32 位 handle 的一种生成方法</h3>
+            <div class="entry-content">
+                <div class="entry-body">
+                    <p>我倾向于在 C 程序里使用整数 handle ，而不是指针。尤其是需要做弱引用的时候。</p>
+
+                    <p>我认为，一个好的 handle 生成算法，应该满足：</p>
+
+                    <ol>
+                        <li>即使 handle 被销毁了，它这个数字也应该被保留，不应该被新的 handle 复用。posix api 里的文件 id 就不符合这一点。</li>
+                        <li>提供一个 api 可以判断一个 handle 是否有效，其时间复杂度为 O(1) 。</li>
+                        <li>从 handle 对应为对象的内存地址的时间复杂度应该为 O(1) ，不应该比指针有明显的性能问题。虽然 hash 表理论上可以满足 O(1) 的时间复杂度，但在糟糕的场景（hash 碰撞发生时）并不能保证这一点。</li>
+                        <li>构造 handle 时间复杂度也为 O(1) 。</li>
+                        <li>handle 的数字位宽最好不要超过 32 bit 。</li>
+                    </ol>
+
+                    <p class="entry-more-link">
+                        <a href="https://blog.codingnow.com/2024/08/handle_generation.html#more">阅读全文 "32 位 handle 的一种生成方法" &raquo;</a>
+                    </p>
+
+                    <p class="entry-footer">
+                        <span class="post-footers">Litsasuk 提交于 03:44 PM</span> <span class="separator">|</span> <a class="permalink" href="https://blog.codingnow.com/2024/08/handle_generation.html">文章链接</a>
+                        | <a href="https://blog.codingnow.com/2024/08/handle_generation.html#comments">留言</a>
+
+                    </p>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!--home2-->
+        <hr>
+        <h4 class="date-header">February 6, 2024</h4>
+        <a id="a001264"></a>
+        <div class="entry" id="entry-1264">
+            <h3 class="entry-header">SSTI合集</h3>
+            <div class="entry-content">
+                <div class="entry-body">
+                    <ul class="module-list">
+                        <li class="module-list-item"><a href="" title="">SSTI思路>></a></li>
+                        <div>主要介绍ssti的常见payload构造及其bypass技巧</div>
+                        <li class="module-list-item"><a href="" title="">SSTI脚本>></a></li>
+                        <div>分享一些我写的或者收集的ssti脚本</div>
+                        <li class="module-list-item"><a href="" title="">SSTI工具>></a></li>
+                        <div>分享一个nb的ssti自动化梭哈工具</div>
+                        <li class="module-list-item"><a href="" title="">SSTI_wp>></a></li>
+                        <div>我写的一些典型题的wp</div>
+                    </ul>
+
+
+                    <p class="entry-more-link">
+                        <a href="https://litsasuk.com/page.html"></a>
+                    </p>
+                    <p class="entry-footer">
+                        <span class="post-footers">Litsasuk 提交于 01:40 PM</span> <span class="separator">|</span> <a class="permalink" href="https://litsasuk
+                              .com/page">文章链接</a>
+                        | <a href="">留言</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        
+
+    </section>
+
+
+
+
+    <footer id="footer">
+        <div class="footer-left">
+            Copyright &copy;
+
+
+            2009-2024
+            Litsasuk
+        </div>
+        <div class="footer-right">
+            <nav>
+                <ul>
+                    <!--
+                   --><li><a href="./">Home</a></li><!--
+     --><!--
+       --><li><a href="./articles/">Articles</a></li><!--
+     --><!--
+       --><li><a href="./categories/">Categories</a></li><!--
+     --><!--
+       --><li><a href="./about/">About</a></li><!--
+     -->
+                </ul>
+            </nav>
+        </div>
+    </footer>
+
+</div>
+<!-- styles -->
+
+
+
+<link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+<!-- jquery -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="./js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
