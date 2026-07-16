@@ -60,7 +60,7 @@
 
                 <!--文章标题-->
                 <h1 class="posttitle p-name" itemprop="name headline" style="font-size: 24px;">
-                    我是不是一个黑客吗?
+                    我是一个黑客吗?
                 </h1>
 
                 <!--时间标签-->
@@ -68,10 +68,8 @@
 
                 <!--文章正文-->
                 <h2>序</h2>
-<!--序-->
 <p>​	如你所见，这是我的博客的第一篇文章。其实之前我是有在<a href="https://www.cnblogs.com/Litsasuk">博客园</a>上发布一些文章来着，但是我最近才意识到那根本不能算正真意义上的博客，大多数文章都是对已有技术的复现和总结，没什么创新点；内容也不够有趣，而且没有任何有深度的探讨。感觉像是在机械的学习，却没有自己的思考和感悟。我之所以会意识到这个问题，是因为Orange师傅的一篇文章：<a href="https://blog.orange.tw/posts/2025-08-the-art-of-php-ch/">The Art of PHP — My CTF Journey and Untold Stories!</a>正如标题所言，这篇文章主要分享了一些非常有意思的经典漏洞，还回顾了Orange师傅传奇的ctf旅程。对比起我自己草草了结的ctf生涯，我感到非常惭愧。读完这篇文章，我觉得我好像失去了初心，变得不像一个黑客了。</p>
 <p>​	所以，这篇文章其实是对我之前短短的&quot;黑客生涯&quot;的一份检讨。</p>
-<!--序-->
 <h2>正文</h2>
 <h3>黑客文化?</h3>
 <p>对于黑客文化，我目前只有感性的认知，了解还不够深刻，于是我从<a href="https://zh.wikipedia.org/wiki/%E9%A7%AD%E5%AE%A2%E6%96%87%E5%8C%96">维基百科</a>中摘录了一些定义出来：</p>
@@ -105,76 +103,6 @@ My crime is that of curiosity.”</p>
 <p>我想，黑客是崇尚自由的，正是对自由的向往，我们挑战一个又一个的系统，拿下一个又一个的shell，渴望把自由的边界拓展到他人所不能企及之处。</p>
 <p>我只是想说:We're all alike.</p>
 <p>Let's hack for fun,hack for curiosity!</p>
-<pre><code>module.exports = function(eleventyConfig) {
-
-    eleventyConfig.addPassthroughCopy(&quot;css&quot;);
-    eleventyConfig.addPassthroughCopy(&quot;js&quot;);
-    eleventyConfig.addPassthroughCopy(&quot;images&quot;);
-    eleventyConfig.addPassthroughCopy(&quot;lib&quot;);
-    eleventyConfig.addPassthroughCopy(&quot;404.html&quot;);
-
-    eleventyConfig.addFilter(&quot;readableDate&quot;, (value) =&gt; {
-        const date = value instanceof Date ? value : new Date(value);
-        return new Intl.DateTimeFormat(&quot;en-US&quot;, {
-            month: &quot;long&quot;,
-            day: &quot;numeric&quot;,
-            year: &quot;numeric&quot;
-        }).format(date);
-    });
-
-    eleventyConfig.addFilter(&quot;isoDate&quot;, (value) =&gt; {
-        const date = value instanceof Date ? value : new Date(value);
-        return date.toISOString().slice(0, 10);
-    });
-
-    eleventyConfig.addFilter(&quot;dateYear&quot;, (value) =&gt; {
-        const date = value instanceof Date ? value : new Date(value);
-        return date.getFullYear();
-    });
-
-    // 1. articles 集合
-    eleventyConfig.addCollection(&quot;articles&quot;, (collectionApi) =&gt; {
-        return collectionApi
-            .getFilteredByGlob(&quot;articles/[0-9][0-9][0-9][0-9]/*.md&quot;)
-            .filter((item) =&gt; item.data &amp;&amp; item.data.title)
-            .sort((a, b) =&gt; {
-                if (b.date.getTime() !== a.date.getTime()) {
-                    return b.date.getTime() - a.date.getTime();
-                }
-                return a.url.localeCompare(b.url);
-            });
-    });
-
-    // 2. articlesByCategory 集合（重新用 glob 获取，不能引用上面的 articles）
-    eleventyConfig.addCollection(&quot;articlesByCategory&quot;, (collectionApi) =&gt; {
-        const articles = collectionApi
-            .getFilteredByGlob(&quot;articles/[0-9][0-9][0-9][0-9]/*.md&quot;)
-            .filter((item) =&gt; item.data &amp;&amp; item.data.title);
-
-        const grouped = {};
-
-        articles.forEach(article =&gt; {
-            const cat = article.data.category || &quot;未分类&quot;;
-            if (!grouped[cat]) grouped[cat] = [];
-            grouped[cat].push(article);
-        });
-
-        return Object.keys(grouped).sort().map(cat =&gt; ({
-            category: cat,
-            items: grouped[cat].sort((a, b) =&gt; b.date - a.date)
-        }));
-    });
-
-    // return 必须放在最后
-    return {
-        dir: {
-            input: &quot;.&quot;,
-            layouts: &quot;_layouts&quot;,
-            output: &quot;_site&quot;
-        }
-    };
-};
-</code></pre>
 
 
             </div>
