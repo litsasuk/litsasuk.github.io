@@ -1843,9 +1843,26 @@ code {
 }
 
 .entry-body a {
-  color: #002a50;  /* 设置字体颜色为 Tomato（番茄红） */
+  font-family: "Noto Serif SC", "Source Han Serif SC", "SimSun", serif;
+  /*font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans SC", sans-serif;*/
+  /*font-family: "优设标题黑", "站酷高端黑", "Microsoft YaHei", sans-serif;*/
+  /*font-family: "Arial Black", "Helvetica Neue", "Microsoft YaHei", sans-serif;*/
+  /*font-family: "Consolas", "Monaco", "Courier New", "Microsoft YaHei", monospace;*/
+  /*font-family: "SimHei", "黑体", "Noto Serif SC", serif;*/
+  /*font-family: "Source Han Serif SC", "Noto Serif SC", "SimSun", serif;*/
+  /*font-family: "Source Han Sans SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;*/
+  font-weight: 600;           /* Bold */
+  color: #002a50;  /* 设置字体颜色） */
   text-decoration: none;  /* 去掉默认的下划线 */
 }
+
+.entry-body a:hover {
+  background-image: linear-gradient(transparent, transparent 4px, #5eb198 4px, #5eb198);
+  background-position: bottom;
+  background-size: 100% 6px;
+  background-repeat: repeat-x;
+}
+
 hr {
      border: 0;
      border-top: 2px solid #ccc;  /* 设置分割线的颜色和厚度 */
