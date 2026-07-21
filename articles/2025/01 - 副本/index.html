@@ -7,6 +7,7 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
+
     gtag('config', 'G-QSR4GJ6TLC');
 </script>
     <meta charset="utf-8">
@@ -24,14 +25,6 @@
     
 
     <meta name="generator" content="11ty">
-
-    <!-- 1. Prism 主题 -->
-    <link href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-nord.min.css" rel="stylesheet" />
-    <!-- 2. 行号插件样式 -->
-    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet" />
-  
-    <!-- 3. Toolbar 插件样式 -->
-    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/toolbar/prism-toolbar.min.css" rel="stylesheet" />
 </head>
 
 <body class="max-width mx-auto px3 ltr">
@@ -76,8 +69,7 @@
                 <!--文章正文-->
                 <h2>序</h2>
 <p>如你所见，这是我的博客的第一篇文章。虽然此前我也有在<a href="https://www.cnblogs.com/Litsasuk">博客园</a>上发布过一些文章，但是我逐渐发现，那样的博客是没有灵魂的。大部分文章仅仅停留在对已有技术的复现和总结，虽然记录了学习过程，却缺少一些属于自己的深入思考与探索。最近读到Orange师傅的一篇文章：<a href="https://blog.orange.tw/posts/2025-08-the-art-of-php-ch/">The Art of PHP — My CTF Journey and Untold Stories!</a>——文章从经典的PHP漏洞出发，回顾了Orange师傅传奇的CTF旅程。对比起我自己草草了结的CTF生涯，我感到非常惭愧。读完这篇文章，我突然意识到，我从未认真思考过&quot;黑客&quot;这个身份的含义，难道选择了这个行业就代表我是一个黑客了吗?</p>
-<p>所以，这篇文章其实是对我之前短短的&quot;黑客生涯&quot;的一份检讨。
-<br></p>
+<p>所以，这篇文章其实是对我之前短短的&quot;黑客生涯&quot;的一份检讨。</p>
 <h2>正文</h2>
 <h3>黑客文化?</h3>
 <p>从接触黑客技术开始，我便理所当然地将自己与&quot;黑客&quot;这个身份联系在一起，也曾简单地认为，学习攻击技术、掌握漏洞利用，便是在成为一名黑客。然而，当我重新审视这个身份时，却发现并非如此。打CTF的就是黑客吗?研究漏洞的就是黑客吗?不，这些只是表象。想要真正了解黑客的内涵还需要从&quot;hack&quot;一词的起源说起。</p>
@@ -95,35 +87,23 @@
 </blockquote>
 <p>这些描述揭示了黑客文化中更深层的精神内核：它并不局限于某种技术能力，而是一种持续探索、创造和深入理解事物的态度和思维方式。黑客享受不断挑战系统边界、发现未知可能性的过程，并从解决问题本身获得满足感。</p>
 <p>那么...我是否拥有这种精神?我能从研究程序漏洞中获得快乐和成就感吗?</p>
-<br>
 <h3>我的黑客生涯</h3>
 <p>高中时代，我便对黑客产生了向往，受各种黑客题材电影的影响，那时的我认为他们是一群神秘而强大的人，仅凭键盘与代码，就能够突破系统的限制，完成看似不可思议的事情。当然，这或许也是许多人年少时对于黑客最初的想象。但这种朦胧的憧憬，并不足以成为我选择信息安全的理由。至于当初为什么选择这条道路，直到现在，我仍然很难给出一个确切的答案。</p>
 <p>我的黑客生涯，其实早在加入学校黑客社团之前便已经开始了。那时，我遇到了自己的第一位师傅——starme，他带我推开了Web安全的大门，也让我第一次看到了隐藏在代码与系统背后的另一个世界。我仍然记得我搭建的第一台kali虚拟机，第一次打开Metasploit，我hack了我人生中的第一个系统——也就是我的主机。当我用kali打开摄像头的那一刻，我在镜头前不知所措的样子真的蛮搞笑的。现在回想起来，屏幕外的我只是一个第一次接触黑客技术的少年，而屏幕里的那个自己，也许真的是一个黑客。</p>
-<br>
 <p>然而，当我为了加入学校黑客社团而开始接触CTF后，我发现自己逐渐偏离了初心。</p>
 <p>我开始把比赛成绩、解题的题目数量和他人的认可放在了探索本身之前。我做题的心态也逐渐变得功利了起来，我不再有耐心分析每一段代码，有时候为了节省时间，干脆直接看wp，仅仅只是为了快速了解题目考察的知识点。我迫切的想要掌握CTF题目的套路，以求在比赛中能够解出足够多的题目。但事实恰恰相反，这并没有使我的解题能力有多大提升，反而消磨了我解题的耐心，剥夺了我享受解题过程的能力。</p>
 <p>CTF的意义，不仅仅在于成绩，更在于黑客之间的技术交流与思维碰撞，抑或是单纯的为了&quot;好玩&quot;。对参赛者来说，破解出题人精心设计的题目，get到其中巧妙的思路与设计，这本身就是一种莫大的快乐和成就感。如此想来，迄今为止，我仍然没有一场CTF是真正为自己，为热爱而参加的，着实惭愧。</p>
-<br>
 <p>有人想多看看路途的风景，而我总想着走捷径。为了尽早获得一份理想的实习，我开始不断寻找前人的经验和路线，并试图沿着一条看似最优的路线前进。事实也确实如此，我的确找到了一份不错的实习，但当我真正走到这一步后，却开始意识到，这并不是我向往的生活。实际上，我才是那个想要多看看风景的人。我曾经过于执着&quot;我应该学什么&quot;，而忽略了&quot;我真正想学什么&quot;，我忙着追赶所谓的&quot;最优路线&quot;，却忘记停下来问问自己：我究竟热爱什么?又愿意为了什么持续投入?于是我开始反思，如果学习技术并不是为了获得一份好的工作，那我学习技术的目的是什么?</p>
 <p>在思绪漫游之际，我又想起了Orange师傅的那篇文章。当我开始从黑客文化和精神的角度重新审视那些漏洞时，曾经被我忽略的各种trick，突然变得无比有趣。自己过去关注的只是漏洞能否利用、是否有实际价值，却忽略了其中蕴含的巧妙思路。那些看似过时、甚至对求职没有直接帮助的漏洞，依然值得被探索。或许对于真正的黑客来说，一个漏洞的最大意义不在于它的利用价值，而是这个漏洞的巧妙程度!</p>
-<br>
 <p>我想，我可以回答上面提出的问题了，我是一个黑客吗?我的答案是肯定的。</p>
 <p>回顾我目前短暂的黑客生涯，让我最难忘的还是出题的那段时间。当时，我打算设计一道PHP方向的题目，于是开始在网上搜罗一些有趣的漏洞思路和题目设计。也正是在这个过程中，我偶然发现了Orange师傅在DEF CON上设计的几道题目，我当即就被这些题目背后的创意深深的吸引住了。出于对这些题目背后思路的好奇，我深入研究了Orange师傅的PHP相关题目，并尝试理解其中的设计理念。最终，我自己的题目也正是融合了其中两道经典题目的思路：<a href="https://github.com/orangetw/My-CTF-Web-Challenges?tab=readme-ov-file#one-line-php-challenge">One Line PHP Challenge</a> 与 <a href="https://github.com/orangetw/My-CTF-Web-Challenges#babyh-master-php-2017">Baby^H Master PHP</a>。不得不说，设计这道题的过程，应该是我黑客生涯中最有意义的一段经历，为了验证两个思路能否结合，我花费了大量时间进行探索和测试，甚至上课也会忍不住思考其中的实现细节。当题目最终在docker镜像中被成功打通的那一刻，那种巨大成就感是无可比拟的。</p>
-<br>
 <h3>一些建议</h3>
 <p>写到这里，我找到了自己一直寻找的答案。黑客精神对我而言，并不只是掌握更多技术、发现更多漏洞，而是在面对未知时保持好奇，在探索过程中享受思考与创造的乐趣。以下几点，既是我对自己的提醒，也是未来黑客道路上希望始终坚持的原则：</p>
 <ul>
-<li>
-<p>遵循内心的选择，而不是盲目追逐所谓的&quot;正确答案&quot;。</p>
-</li>
-<li>
-<p>享受思考和探索带来最纯粹的快乐</p>
-</li>
-<li>
-<p>永远保持好奇心，勇于探索知识的边界</p>
-</li>
+<li>遵循内心的选择，而不是盲目追逐所谓的&quot;正确答案&quot;。</li>
+<li>享受思考和探索带来最纯粹的快乐</li>
+<li>永远保持好奇心，勇于探索知识的边界</li>
 </ul>
-<br>
 <h2>结语</h2>
 <p>我想用<a href="https://phrack.org/issues/7/3">黑客宣言</a>中最经典的语句作为结尾:</p>
 <blockquote>
@@ -160,23 +140,10 @@ My crime is that of curiosity.&quot;</p>
     </footer>
 </div>
 
-  <!-- Prism 核心：禁用自动高亮 -->
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js" data-manual></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
-  
-  <!-- 所有插件 -->
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/toolbar/prism-toolbar.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
-
-  <!-- 最后：添加行号类 + 手动触发高亮 -->
-  <script>
-    document.querySelectorAll('pre:not(.line-numbers)').forEach(function(pre) {
-      pre.classList.add('line-numbers');
-    });
-    Prism.highlightAll();
-  </script>
-
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism.min.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/plugins/line-numbers/prism-line-numbers.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
 
 <script src="/js/main.js"></script>
 

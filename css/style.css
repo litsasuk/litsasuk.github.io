@@ -1878,7 +1878,7 @@ pre {
   border-radius: 5px;
   overflow-x: auto;
   font-family: 'Courier New', Courier, monospace;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 1.5;
   color: #333;
 }
@@ -1939,6 +1939,40 @@ h1 {
   -webkit-font-smoothing: antialiased;
   margin-top: 20px;
 }
+/* quote */
+blockquote {
+  position: relative;
+  margin: 1rem 0 1rem 0;
+  padding: 1rem 1rem 1rem 1.5rem;
+  background-color: #00997B0D;
+  border-radius: 5px;
+  line-height: 1.7;
+  font-family: "Source Han Serif SC", "Noto Serif SC", "Songti SC", serif;
+  font-size: 0.8rem;           /* 字体大小 */
+  text-align: left;
+}
+
+blockquote p {
+  color: #81888D;
+  margin: 0;
+  text-align: left;            /* 段落文字左对齐 */
+}
+
+blockquote::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0.30rem;
+  background: #5eb198;
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
+
+
+
+
 /*.entry-body p {*/
 /*  text-indent: 2em;*/
 /*}*/
