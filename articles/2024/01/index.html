@@ -140,9 +140,9 @@ if (!isset($_COOKIE[&quot;session-data&quot;])) {
     check_session();
 } 
 </code></pre>
-<p>先来看session的逻辑，通过check_session()校验后可以直接反序列化，但是这里使用了hmac-sha256签名算法，无法读取到$SECRET，是没有办法绕过的，只能另辟蹊径。</p>
+<p>先来看session的逻辑，如果是role是admin的话，通过check_session()校验后可以直接实例化一个Admin类，但是这里使用了hmac-sha256签名算法，而且校验非常严格，无法读取到<code>$SECRET</code>，也就没有办法伪造成admin。(btw，这个<code>$SECRET</code>其实就是flag😜)</p>
 <p>总所周知，copy是可以使用phar伪协议的，而且只要实例化admin类就能直接命令执行了，有经验的师傅应该可以看出这里实际的利用方式是phar反序列化。但是这里没有文件上传点，一部分师傅就有可能会卡在这里了，嘿嘿，这就是这道题最精妙的地方了。</p>
-<p>我们需要找一个内部可控的文件来进行构造，可控文件无非临时文件，日志文件，session文件。临时文件无法知道文件名，日志文件无法知道路径，那么就只有session文件了。</p>
+<p>我们需要找一个内部可控的文件来进行构造，可控文件无非临时文件，日志文件，session文件。临时文件无法知道文件名，日志文件无法知道路径(可以试着copy一下，看成不成功)，那么就只有session文件了。</p>
 <p>php7.2中存在一个漏洞，在默认配置下，如果强制向系统上传一个文件的话，会生成一个session文件，这个文件是可以通过Cookie的PHP_SESSION_UPLOAD_PROGRESS字段写入数据的，只能是字符串格式，而且这段数据的前后还会有系统生成的垃圾数据。</p>
 <p>那么结合之前的phar反序列化思路，不难想到可以将phar文件编码为字符串，然后写入session文件中，最后再用copy函数还原和利用。</p>
 <br>
@@ -280,6 +280,13 @@ for t in threads:
 <p><a href="https://xz.aliyun.com/t/2958">https://xz.aliyun.com/t/2958</a></p>
 <p><a href="https://blog.diggid.fun/2021/05/30/Laravel-8-Debug-Mode-RCE-%E6%8B%93%E5%B1%95%E4%B8%8E%E8%B8%A9%E5%9D%91/#payload%E6%80%BB%E7%BB%93">Laravel 8 Debug Mode RCE 拓展与踩坑 · Diggid's Blog</a></p>
 <p><a href="https://xz.aliyun.com/t/1773/?time__1311=7qAODKiKYvwbDs5YYK0%3DjM7jDu0SfeD">https://xz.aliyun.com/t/1773/</a></p>
+<h2>结尾</h2>
+<p>这道题的题目描述是:</p>
+<blockquote>
+<p>Please take me back to the golden age of PHP😭.</p>
+</blockquote>
+<p>或许这些漏洞早已退出了历史的舞台，我们再也回不到phar反序列化问世时的那个夜晚。</p>
+<p>但是，那些看似&quot;过时&quot;的思路和Trick，也许正是一把能带领我们回到那个独属于PHP的黄金年代的钥匙。</p>
 
 
             </div>

